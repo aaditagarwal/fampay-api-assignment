@@ -1,3 +1,4 @@
+from unittest import result
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS, cross_origin
 
@@ -6,27 +7,40 @@ import requests
 import datetime
 import time
 import json
+from FamAPI.PayEnd.config import YOUTUBE_API_VERSION, YOUTUBE_SERVICE_NAME
 
-from setting import (
+from lib.config import (
     HOST_PORT,
     HOST_URL,
     SHORT_SLEEP,
     LONG_SLEEP
 )
+from Service.youtube_service import YoutubeService 
 
 app = Flask(__name__)
 cors = CORS(app)
+
 SERVER_START_TIME = datetime.datetime.utcnow()
+youtube_fetcher = YoutubeService(YOUTUBE_SERVICE_NAME, YOUTUBE_API_VERSION)
+#initialize page token
+page_token = None
 
 @app.before_first_request
 def activate_job():
     def poll_youtube_videos():
         while True:
             print("[Youtube API] fetching new videos...")
-            
+            global page_token
+            results, next_token = youtube_fetcher.fetch_latest_videos(
+                page_token
+            )
+            if(next_token):
+                page_token = next_token
+            else:
+                page_token = page_token
             time.sleep(LONG_SLEEP)
 
-    thread = threading.Thread(target=run_job)
+    thread = threading.Thread(target=poll_youtube_videos)
     thread.start()
 
 @app.route("/", methods=["GET"])
