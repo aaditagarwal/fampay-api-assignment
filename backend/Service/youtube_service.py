@@ -11,6 +11,11 @@ from lib.config import (
     PUBLISHED_AFTER_TIME,
     QUERY
 )
+from Database.schema import DbSchema
+from Database.queries import (
+    add_video,
+    add_videos
+)
 
 class YoutubeService:
     def __init__(self, service_name, api_version):
@@ -32,7 +37,7 @@ class YoutubeService:
         self.api_key = generate_new_api_key()
         print("[Youtube Service] Updated API Key...")
 
-    def fetch_latest_videos(self, page_token):
+    def fetch_latest_videos(self, page_token, save_each=True):
         try:
             api_response = (
                 self.youtube_object.search()
@@ -60,7 +65,7 @@ class YoutubeService:
                 print(f"[Youtube Service] Uncaught Exception: {e}")
             return [], None
 
-        results = []
+        fetched_video = []
         for item in api_response.get('items', []):
             #Iterating Videos
             if item["id"]["kind"] == "youtube#video":
@@ -69,5 +74,34 @@ class YoutubeService:
                     "%Y-%m-%dT%H:%M:%SZ",
                 ).strftime("%Y-%m-%d %H:%M:%S")
 
+                fetched_video = DbSchema(
+                    item["id"]["videoId"],
+                    item["snippet"]["title"],
+                    item["snippet"]["description"],
+                    published_date,
+                    item["snippet"]["thumbnails"]["default"]["url"],
+                    item["snippet"]["thumbnails"]["high"]["url"]
+                )
+
+                if save_each:
+                    self.save_video(fetched_video)
+                else:
+                    fetched_video.append(fetched_video)
+        self.save_videos(fetched_video)
         next_page_token = response.get("nextPageToken", None)
-        return results, next_page_token
+        return next_page_token
+
+    @staticmethod
+    def save_video(fetched_video):
+        if fetched_video:
+            add_video(fetched_video.__dict__)
+        else:
+            print("[Youtube Service] Error: Empty Video")
+    
+    @staticmethod
+    def save_videos(fetched_videos):
+        video_list = [video.__dict__ for video in fetched_videos]
+        if fetched_videos:
+            add_videos(fetched_videos.__dict__)
+        else:
+            print("[Youtube Service] Error: Empty Video List")

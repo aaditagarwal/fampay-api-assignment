@@ -15,6 +15,17 @@ PUBLISHED_AFTER_TIME = 1209600 #2 weeks in seconds
 
 #Youtube API Keys
 API_KEYS = os.getenv("GOOGLE_API_KEYS").split(',')
+#Youtube Object
+YOUTUBE_SERVICE_NAME = "youtube"
+YOUTUBE_API_VERSION = "v3"
 
 #PreDefined Query
 QUERY = 'football'
+
+#MongoDB Database
+MONGODB_URI = "mongodb://localhost:27017"
+MONGODB_DATABASE = "fampay_api_db"
+MONGODB_COLLECTION = "fampay_api_colelction"
+
+#Pagination
+PAGINATION_LIMIT  = 10
