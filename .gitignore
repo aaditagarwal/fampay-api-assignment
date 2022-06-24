@@ -1,2 +1,3 @@
 #PyCache
 backend/__pycache__/
+backend/.env
