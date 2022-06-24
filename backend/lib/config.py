@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #Hosted URL
 HOST_PORT = "8080"
@@ -14,7 +17,7 @@ LONG_SLEEP = 10
 PUBLISHED_AFTER_TIME = 1209600 #2 weeks in seconds
 
 #Youtube API Keys
-API_KEYS = os.getenv("GOOGLE_API_KEYS").split(',')
+API_KEYS = os.getenv("GOOGLE_API_KEYS").split(",")
 #Youtube Object
 YOUTUBE_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"

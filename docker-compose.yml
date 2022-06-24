@@ -1,0 +1,17 @@
+version: "2.4"
+
+services:
+  mongo:
+    image: mongo:4.0-xenial
+    volumes:
+      - data:/data/db
+  flask:
+    build: ./backend
+    env_file: ./backend/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
+volumes:
+  data:
