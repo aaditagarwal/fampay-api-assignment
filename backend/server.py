@@ -34,7 +34,7 @@ database_fetcher = DatabaseService()
 def activate_job():
     def poll_youtube_videos():
         while True:
-            print("[Youtube Service] fetching new videos...")
+            print("[Youtube Service] fetching new videos...", flush=True)
             global page_token
             next_token = youtube_fetcher.fetch_latest_videos(
                 page_token, bulk_save
@@ -62,12 +62,12 @@ def root():
     )
     return res
 
-@app.route("/search")
+@app.route("/search", methods=["GET"])
 @cross_origin
 def search():
     query = request.args.get('query')
     page = int(request.args.get('page'))
-    print("[Database Service] query: {",query,"}, page: {",page,"}")
+    print("[Database Service] query: {",query,"}, page: {",page,"}", flush=True)
     return Response(
         json.dumps(DatabaseService.search_videos(query, page)),
         status=200,
@@ -79,19 +79,19 @@ def start_runner():
     def start_loop():
         not_started = True
         while not_started:
-            print('In start loop')
+            print('In start loop', flush=True)
             try:
                 #Checking if Server started
                 r = requests.get(f"http://{HOST_URL}:{HOST_PORT}")
                 if r.status_code == 200:
-                    print('Server started, quiting start_loop')
+                    print('Server started, quiting start_loop', flush=True)
                     not_started = False
-                print(r.status_code)
+                print(r.status_code, flush=True)
             except:
-                print('Server not yet started')
+                print('Server not yet started', flush=True)
             time.sleep(SHORT_SLEEP)
 
-    print('Started runner')
+    print('Started runner', flush=True)
     thread = threading.Thread(target=start_loop)
     thread.start()
 

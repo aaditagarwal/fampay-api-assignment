@@ -1,5 +1,4 @@
 import datetime
-from urllib import response
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
@@ -30,12 +29,13 @@ class YoutubeService:
 
     def build_youtube_object(self):
         return build(
-            self.service_name, self.api_version, developer_key=self.api_key
+            self.service_name, self.api_version, developerKey=self.api_key
         )
 
     def update_api_key(self):
         self.api_key = generate_new_api_key()
-        print("[Youtube Service] Updated API Key...")
+        print("[Youtube Service] Updated API Key...", flush=True)
+        print("[Youtube Service] Updated API Key: ",self.api_key, flush=True)
 
     def fetch_latest_videos(self, page_token, save_each=True):
         try:
@@ -52,7 +52,7 @@ class YoutubeService:
                 .execute()
             )
         except Exception as e:
-            print(f"[Youtube Service] Error: {e}")
+            print(f"[Youtube Service] Error: {e}", flush=True)
             #Youtube API limit reached
             if(
                 isinstance(e, HttpError) and
@@ -62,10 +62,10 @@ class YoutubeService:
                 self.update_api_key()
                 self.youtube_object = self.build_youtube_object()
             else:
-                print(f"[Youtube Service] Uncaught Exception: {e}")
+                print(f"[Youtube Service] Uncaught Exception: {e}", flush=True)
             return [], None
 
-        fetched_video = []
+        fetched_videos = []
         for item in api_response.get('items', []):
             #Iterating Videos
             if item["id"]["kind"] == "youtube#video":
@@ -86,22 +86,22 @@ class YoutubeService:
                 if save_each:
                     self.save_video(fetched_video)
                 else:
-                    fetched_video.append(fetched_video)
-        self.save_videos(fetched_video)
-        next_page_token = response.get("nextPageToken", None)
+                    fetched_videos.append(fetched_video)
+        self.save_videos(fetched_videos)
+        next_page_token = api_response.get("nextPageToken", None)
         return next_page_token
 
     @staticmethod
     def save_video(fetched_video):
         if fetched_video:
-            add_video(fetched_video.__dict__)
+            add_video(fetched_video)
         else:
-            print("[Youtube Service] Error: Empty Video")
+            print("[Youtube Service] Error: Empty Video", flush=True)
     
     @staticmethod
     def save_videos(fetched_videos):
-        video_list = [video.__dict__ for video in fetched_videos]
-        if fetched_videos:
-            add_videos(fetched_videos.__dict__)
+        video_list = [video for video in fetched_videos]
+        if video_list:
+            add_videos(video_list)
         else:
-            print("[Youtube Service] Error: Empty Video List")
+            print("[Youtube Service] Error: Empty Video List", flush=True)

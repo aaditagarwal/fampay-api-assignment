@@ -8,7 +8,7 @@ HOST_PORT = "8080"
 HOST_URL = "0.0.0.0"
 
 #Time before starting server
-SHORT_SLEEP = 2,
+SHORT_SLEEP = 2
 
 #Polling Interval
 LONG_SLEEP = 10
@@ -26,9 +26,10 @@ YOUTUBE_API_VERSION = "v3"
 QUERY = 'football'
 
 #MongoDB Database
-MONGODB_URI = "mongodb://localhost:27017"
+MONGODB_URI = "mongodb://mongo:27017/fampay_api_db"
 MONGODB_DATABASE = "fampay_api_db"
 MONGODB_COLLECTION = "fampay_api_colelction"
+
 
 #Pagination
 PAGINATION_LIMIT  = 10

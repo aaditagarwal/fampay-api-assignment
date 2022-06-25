@@ -3,11 +3,19 @@ version: "2.4"
 services:
   mongo:
     image: mongo:4.0-xenial
+    ports:
+      - 27017:27017
     volumes:
       - data:/data/db
+    networks:
+      host:
   flask:
     build: ./backend
     env_file: ./backend/.env
+    networks:
+      - host
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
     ports:
       - "8080:8080"
     depends_on:
@@ -15,3 +23,6 @@ services:
 
 volumes:
   data:
+
+networks:
+  host:
