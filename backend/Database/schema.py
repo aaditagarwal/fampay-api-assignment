@@ -10,9 +10,14 @@ class DbSchema:
         thumbnail_default_res,
         thumbnail_high_res
     ):
-        self.id = id,
-        self.title = title,
-        self.description = description,
-        self.published_at = published_at,
-        self.thumbnail_default_res = thumbnail_default_res,
-        self.thumbnail_high_res = thumbnail_high_res
+        schema_object = {
+            "id": id,
+            "title": title,
+            "description": description,
+            "published_at": published_at,
+            "thumbnail": {
+                "default_res": thumbnail_default_res,
+                "high_res": thumbnail_high_res
+            }
+        }
+        return schema_object
