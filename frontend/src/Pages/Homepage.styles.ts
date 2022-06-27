@@ -6,7 +6,7 @@ export const styles = {
         width: "100vw",
         alignItems: "center",
         flexDirection: "column",
-        backgroundColor: "#0f0e17",
+        backgroundColor: "#FFFFFF",
         paddingBottom: "5vh",
     },
 
@@ -19,25 +19,16 @@ export const styles = {
     },
 
     search: {
-        width: "100%",
-        backgroundColor: "#fffffe",
-        padding: "0.5vw",
-        borderRadius: "20px",
-        border: "none",
-        outline: "none",
-        fontSize: "large",
-        color: "#0f0e17",
-    },
-
-    searchButton: {
-        backgroundColor: "#053472",
-        color: "#ffffff",
-        border: "none",
-        outline: "none",
-        padding: "2%",
-        width: "100px",
-        cursor: "pointer",
-        borderRadius: "20px",
+        '& .ant-input-search': {
+            width: "100%",
+            backgroundColor: "#FFAD00",
+            padding: "0.5vw",
+            borderRadius: "20px",
+            border: "none",
+            outline: "none",
+            fontSize: "large",
+            color: "#000000",
+        },
     },
 
     videoHolder: {

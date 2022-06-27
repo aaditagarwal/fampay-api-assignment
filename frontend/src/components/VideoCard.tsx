@@ -25,7 +25,7 @@ const Videocard = (props: VideoCardType) => {
 
             <div className={classes.content}>
                 <h3 className={classes.title}>{title}</h3>
-                <p>{description}</p>
+                <p className={classes.description}>{description}</p>
             </div>
 
         </div>

@@ -11,7 +11,8 @@ export const GET = async (
         });
         return {
           isSuccess: true,
-          data: response
+          data: response?.data,
+          status: response?.status
         };
       } catch (err) {
         const errorMessage = getErrorMessage(err);

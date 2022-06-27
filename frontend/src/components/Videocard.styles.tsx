@@ -24,4 +24,8 @@ export const styles = {
         fontSize: "200%",
     },
 
+    description: {
+        color: "#FFAD00"
+    }
+
 };
