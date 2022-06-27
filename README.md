@@ -15,7 +15,8 @@ Website hosted on: [http://localhost:3000](http://localhost:3000)
 ---
 ## Pre-requistites
 - Docker and Docker-compose
-- Create a `.env.example` file in the `backend` subdirectory using the provided example `env.(or set an environment variable):
+- Create a `.env` file in the [backend/](./backend/) subdirectory using the provided example [.env.example](./backend/.env.example)\
+(or set an environment variable):
 ```sh
 GOOGLE_API_KEYS=api,keys,separated,by,comma
 ```
