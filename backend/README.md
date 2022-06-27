@@ -30,6 +30,8 @@ pip install -r requirements.txt
 python server.py
 ```
 
+## Tech Stack Used
+- Python (Flask), MongoDB, Docker
 ## Code Navigation
 - The entry point into the server codebase is [server.py](./server.py).
 - All the available API routes can be found in the server file.
