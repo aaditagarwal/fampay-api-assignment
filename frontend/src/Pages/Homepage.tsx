@@ -12,49 +12,26 @@ import { RewardProps, VideoListType } from '../lib/Types';
 const Homepage = (props: RewardProps) => {
 
     const { classes } = props;
-    const { Search } = Input;
 
-    const [state, setState] = useState({
-        query: "" as string,
-        result: [] as any,
-        currentPage: 0 as number,
-    });
+    const [query, setQuery] = useState("" as string);
+    const [result, setResult] = useState([] as any);
+    const [currentPage, setCurrentPage] = useState(0 as number);
 
-    const updateQuery = (value: string) => {
-        setState({
-            ...state,
-            query: value
-        });
-    };
     const updatePage = (newPage: number) => {
         console.log("[Website]: Updating Page...", newPage);
-        setState({
-            ...state,
-            currentPage: newPage
-        });
+        setCurrentPage(newPage);
         getVideos(newPage);
     };
     const getVideos = async (pageNumber: number) => {
         const api_results = await fetchVideos({
-            'page': pageNumber ?? state.currentPage,
-            'query': state.query
+            'page': pageNumber ?? currentPage,
+            'query': query
         });
         if(api_results?.isSuccess){
-            const videoCards = api_results?.data.map( (videoElement: VideoListType) => {
-                return <VideoCard
-                    key = {videoElement?.youtube_id}
-                    title = {videoElement?.title}
-                    description = {videoElement.description}
-                    thumbnail_default_res = {videoElement.thumbnail.default_res}
-                    thumbnail_high_res = {videoElement.thumbnail.high_res}
-                />
-            });
-            if(videoCards.length > 0){
+            if(api_results?.data?.length > 0){
                 console.log("[Website] New Videos Fetched");
-                setState({
-                    ...state,
-                    result: videoCards
-                });
+                setResult([]);
+                setResult(api_results?.data);
             }
             else{
                 message.error("No Videos Found");
@@ -73,34 +50,37 @@ const Homepage = (props: RewardProps) => {
             <Header />
 
             <div className={classes.searchDiv}>
-                <Search
+                <Input
                     placeholder='Search Football Videos'
                     className={classes.search}
-                    value={state.query}
+                    value={query}
                     allowClear={true}
-                    onSearch={(value: string) => {updateQuery(value)}}
+                    onChange={(event) => setQuery(event.target.value)}
+                />
+                <Button
+                    shape='circle'
+                    icon={<SearchOutlined />}
+                    onClick={() => getVideos(0)}
                 />
             </div>
-            <Button
-                className={classes.searchButton}
-                shape="circle"
-                icon={<SearchOutlined />}
-                onClick={() => getVideos(0)}
-            />
 
             <div className={classes.videoHolder}>
-                {state.result}
+                {result.map((videoElement: VideoListType) => <VideoCard
+                    key = {videoElement?.youtube_id}
+                    title = {videoElement?.title}
+                    description = {videoElement.description}
+                    thumbnail_default_res = {videoElement.thumbnail.default_res}
+                    thumbnail_high_res = {videoElement.thumbnail.high_res}
+                />)}
             </div>
 
             <div className={classes.pagination}>
                 <Button
                     shape='circle'
                     icon={<RightOutlined />}
-                    onClick={() => updatePage(state.currentPage+1)}
+                    onClick={() => updatePage(currentPage+1)}
                 />
             </div>
-
-
         </div>
     );
 }
