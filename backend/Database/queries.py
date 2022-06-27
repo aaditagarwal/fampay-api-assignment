@@ -14,7 +14,6 @@ def add_video(fetched_video):
     print('[Databse] Saved Video', flush=True)
     
 def add_videos(fetched_videos):
-    print(fetched_videos,flush=True)
     try:
         db_collection.insert_many(fetched_videos)
     except errors.BulkWriteError:
@@ -23,9 +22,11 @@ def add_videos(fetched_videos):
 
 def search_videos(query, skip_count):
     if query:
-        search = {"$text": {
-            "$search": query
-        }}
+        search = {
+            "$text": {
+                "$search": query
+            },
+        }
     else:
         search = {}
     

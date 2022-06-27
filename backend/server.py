@@ -63,13 +63,13 @@ def root():
     return res
 
 @app.route("/search", methods=["GET"])
-@cross_origin
+@cross_origin()
 def search():
     query = request.args.get('query')
     page = int(request.args.get('page'))
     print("[Database Service] query: {",query,"}, page: {",page,"}", flush=True)
     return Response(
-        json.dumps(DatabaseService.search_videos(query, page)),
+        json.dumps(DatabaseService.search_videos_db(query, page), default=str),
         status=200,
         mimetype='application/json'
     )

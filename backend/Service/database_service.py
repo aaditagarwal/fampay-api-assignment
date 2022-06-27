@@ -5,7 +5,7 @@ class DatabaseService:
         pass
 
     @staticmethod
-    def search_videos(query, page):
+    def search_videos_db(query, page):
         results = search_videos(query, page)
         
         service_response = []

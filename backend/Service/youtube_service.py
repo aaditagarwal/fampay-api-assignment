@@ -74,13 +74,13 @@ class YoutubeService:
                     "%Y-%m-%dT%H:%M:%SZ",
                 ).strftime("%Y-%m-%d %H:%M:%S")
 
-                fetched_video = DbSchema(
-                    item["id"]["videoId"],
-                    item["snippet"]["title"],
-                    item["snippet"]["description"],
-                    published_date,
-                    item["snippet"]["thumbnails"]["default"]["url"],
-                    item["snippet"]["thumbnails"]["high"]["url"]
+                fetched_video = DbSchema.create_schema_object(
+                    youtube_id= item["id"]["videoId"],
+                    title= item["snippet"]["title"],
+                    description= item["snippet"]["description"],
+                    published_at= published_date,
+                    thumbnail_default_res= item["snippet"]["thumbnails"]["default"]["url"],
+                    thumbnail_high_res= item["snippet"]["thumbnails"]["high"]["url"]
                 )
 
                 if save_each:

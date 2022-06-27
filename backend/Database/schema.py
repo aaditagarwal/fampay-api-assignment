@@ -1,9 +1,12 @@
 class DbSchema:
     #Schema for each fetched video
 
-    def __init__(
-        self,
-        id,
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def create_schema_object(
+        youtube_id,
         title,
         description,
         published_at,
@@ -11,7 +14,7 @@ class DbSchema:
         thumbnail_high_res
     ):
         schema_object = {
-            "id": id,
+            "youtube_id": youtube_id,
             "title": title,
             "description": description,
             "published_at": published_at,
